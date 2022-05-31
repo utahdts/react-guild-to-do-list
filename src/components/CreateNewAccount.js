@@ -1,40 +1,30 @@
-import React, { useState, useRef } from 'react';
-import PropTypes from 'prop-types';
+import React, { useRef } from 'react';
+import usePostAccounts from '../webservice/usePostAccounts';
 
 const propTypes = {};
 const defaultProps = {};
 
-const CreateNewAccount = props => {
-
-    const [newAccount, setNewAccount] = useState();
+const CreateNewAccount = () => {
     const accountNameRef = useRef();
-    
-    function createAccount() {
-        let newData = {name: accountNameRef.current.value};
-        fetch("https://dts-appex-todolist-ws-a234spjofq-wm.a.run.app/api/v1/accounts", {
-            method: 'POST', 
-            body: JSON.stringify(newData),
-            headers: {
-                'Content-Type': 'application/json'
-                // 'Content-Type': 'application/x-www-form-urlencoded',
-            },
-        })
-        .then(res => res.json())
-        .then(account => { 
-            console.log(account);
-            setNewAccount(account); 
-        });
-    }
-    
+    const addAccountFuncAsync = usePostAccounts();
+
     return (
         <form>
             {/* <label htmlFor="account-name">Account Name</label> */}
             <label>
                 Account Name
-                  <input type="text" id="account-name" name="account-name" ref={accountNameRef} />
+                <input type="text" id="account-name" name="account-name" ref={accountNameRef} />
             </label>
-            
-            <button type="button" onClick={()=>{createAccount()}}>Add Account</button>
+
+            <button
+                type="button"
+                onClick={() => {
+                    const newData = {name: accountNameRef.current.value};
+                    addAccountFuncAsync(newData).then(() => accountNameRef.current.value = "");
+                }}
+            >
+                Add Account
+            </button>
         </form>
     );
 };

@@ -1,24 +1,24 @@
-import { useEffect, useState } from "react";
+import { useMutation, useQueryClient } from "react-query";
 
 export default () => {
-  const [newAccount, setNewAccount] = useState([]);
+  const queryClient = useQueryClient();
 
-  useEffect(
+  const mutation = useMutation(
     (newAccountData) => {
-      // fetch(url, {method: 'POST', body: JSON.stringify(data)})
-      // // pulls the account info
-      // fetch("https://dts-appex-todolist-ws-a234spjofq-wm.a.run.app/api/v1/accounts")
-      //   .then(res => res.json())
-      //   .then(newAccounts => { setAccounts(newAccounts); });
-      fetch("https://dts-appex-todolist-ws-a234spjofq-wm.a.run.app/api/v1/accounts", {method: 'POST', body: JSON.stringify(data)})
+      return fetch("https://dts-appex-todolist-ws-a234spjofq-wm.a.run.app/api/v1/accounts", {
+        method: 'POST',
+        body: JSON.stringify(newAccountData),
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      })
         .then(res => res.json())
-        .then(account => { 
-          setNewAccount(account);
-          console.log(newAccount); 
-        });
-    },
-    []
+    }, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('accounts-GET');
+    }
+  }
   );
 
-  return newAccount;
+  return mutation.mutateAsync;
 };
