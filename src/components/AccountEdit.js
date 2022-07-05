@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import PropTypes from "prop-types";
-import useGetAccount from "../webservice/useGetAccount";
-import usePutAccount from "../webservice/usePutAccount";
+import useGetAccount from "../webservice/account/useGetAccount";
+import usePutAccount from "../webservice/account/usePutAccount";
 
 const propTypes = {
     id: PropTypes.string.isRequired,
@@ -12,7 +12,7 @@ export default function AccountEdit({id}){
   let account = useGetAccount(id);
   const [accnt, setAccnt] = useState();
   const mutate = usePutAccount();
-    
+
     // function updateAccount() {
     //     mutate(accnt);
     // }

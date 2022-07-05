@@ -76,3 +76,34 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
       "react-app/jest"
     ]
   },
+
+
+## HTTP Verb usage
+[www.restapitutorial.com](https://www.restapitutorial.com/lessons/httpmethods.html)
+
+This REST API uses the following HTTP verbs with the following results based if the url is for a collection/list of records or targets a single record:
+
+* DELETE *Delete*
+  * collection: 405 (Method Not Allowed), unless you want to delete the whole collection—not often desirable.
+  * specific: 200 (OK). 404 (Not Found), if ID not found or invalid.
+* GET *Read*
+  * collection: 200 (OK), list of customers. Use pagination, sorting and filtering to navigate big lists.
+  * specific: 200 (OK), single customer. 404 (Not Found), if ID not found or invalid.
+* PATCH *Update/Modify*
+  * collection: 405 (Method Not Allowed), unless you want to modify the collection itself.
+  * specific: 200 (OK) or 204 (No Content). 404 (Not Found), if ID not found or invalid.
+* POST *Create*
+  * collection: 201 (Created), 'Location' header with link to /customers/:id containing new ID.
+  * specific: 404 (Not Found), 409 (Conflict) if resource already exists..
+* PUT *Update/Replace*
+  * collection: 405 (Method Not Allowed), unless you want to update/replace every resource in the entire collection.
+  * specific: 200 (OK) or 204 (No Content). 404 (Not Found), if ID not found or invalid.
+
+## URL templates
+Here are templates for the different objects and their urls to which the above HTTP Verbs may be applied
+* Accounts: `/api/v1/accounts`
+* Account: `/api/v1/accounts/:accountId`
+* ToDo-Lists: `/api/v1/accounts/:accountId/todo-lists`
+* ToDo-List: `/api/v1/accounts/:accountId/todo-lists/:toDoListId`
+* ToDos: `/api/v1/accounts/:accountId/todo-lists/:toDoListId/todos`
+* ToDo: `/api/v1/accounts/:accountId/todo-lists/:toDoListId/todos/:toDoId`

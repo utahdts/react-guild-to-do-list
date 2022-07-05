@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 
 export default () => {

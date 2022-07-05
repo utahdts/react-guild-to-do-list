@@ -1,8 +1,9 @@
-import useGetAccounts from '../webservice/useGetAccounts';
-import React, { useState, useEffect } from 'react';
+import useGetAccounts from '../webservice/account/useGetAccounts';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import useDeleteAccount from '../webservice/useDeleteAccount';
+import useDeleteAccount from '../webservice/account/useDeleteAccount';
 import AccountEdit from './AccountEdit';
+import usePatchAccount from '../webservice/account/usePatchAccount';
 
 
 const propTypes = {};
@@ -19,30 +20,46 @@ const defaultProps = {};
 // 			}
 // 		})
 // 		// .then(data => {
-// 		// 	console.log(data); 
+// 		// 	console.log(data);
 // 		// });
 // }
 
-const AccountsList = ({accounts, setAccounts}) => {
+const AccountsList = () => {
 	const accountsList = useGetAccounts();
 	const deleteAccount = useDeleteAccount();
+	const patchAccount = usePatchAccount();
+
 
 	const [account, setAccount] = useState(null);
+	const accountNameEditRef = useRef();
 
-	useEffect(() => {
-		setAccounts(accountsList)
-	}, [accountsList]);
-	// console.log(accounts);
 	return (
 		<>
 			<ul>
 				{accountsList?.map((accnt, i) => (
-					<li key={`accnt-${accnt.id}`} onClick={(e)=>{setAccount(accnt)}}>{accnt.id===account?.id?"input":accnt.name} <button onClick={(e)=>{
-						e.stopPropagation();
-						deleteAccount(accnt.id)
-					}}>X</button></li>
+					<li key={`accnt-${accnt.id}`} onClick={(e) => { setAccount(accnt) }}>
+						{
+							accnt.id === account?.id
+								? (
+										<>
+											<input type="text" ref={accountNameEditRef} defaultValue={accnt.name}/>
+											<button onClick={
+												() => patchAccount({
+													id: accnt.id,
+													name: accountNameEditRef.current.value,
+												})
+											}>Save Name</button>
+										</>
+								)
+								: accnt.name
+						}
+						<button onClick={(e) => {
+							e.stopPropagation();
+							deleteAccount(accnt.id)
+						}}>X</button>
+					</li>
 				))}
-			</ul>{account? <AccountEdit id={account.id} />: null}
+			</ul>{account ? <AccountEdit id={account.id} /> : null}
 		</>
 	);
 };
