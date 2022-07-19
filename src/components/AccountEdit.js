@@ -2,6 +2,8 @@ import React, {useState, useEffect} from "react";
 import PropTypes from "prop-types";
 import useGetAccount from "../webservice/account/useGetAccount";
 import usePutAccount from "../webservice/account/usePutAccount";
+import useGetTodolists from "../webservice/todolists/useGetTodolists";
+import usePostTodolists from "../webservice/todolists/usePostTodolists";
 
 const propTypes = {
     id: PropTypes.string.isRequired,
@@ -9,9 +11,12 @@ const propTypes = {
 
 
 export default function AccountEdit({id}){
-  let account = useGetAccount(id);
+  const account = useGetAccount(id);
+  const todoLists = useGetTodolists(id);
+  console.log(todoLists);
   const [accnt, setAccnt] = useState();
   const mutate = usePutAccount();
+  const listOfLists = usePostTodolists();
 
     // function updateAccount() {
     //     mutate(accnt);
@@ -35,6 +40,8 @@ export default function AccountEdit({id}){
         newAccount.color = e.target.value;
         return newAccount;
       })}} />
+      {/* todo: post a new list -see next line- */}
+      <button onClick={() => { listOfLists(lists) }}>Add New List</button>
       <button type="submit" onClick={()=>{mutate(accnt)}}>Save</button>
     </div>
   )

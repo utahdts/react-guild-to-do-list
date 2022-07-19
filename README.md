@@ -107,3 +107,23 @@ Here are templates for the different objects and their urls to which the above H
 * ToDo-List: `/api/v1/accounts/:accountId/todo-lists/:toDoListId`
 * ToDos: `/api/v1/accounts/:accountId/todo-lists/:toDoListId/todos`
 * ToDo: `/api/v1/accounts/:accountId/todo-lists/:toDoListId/todos/:toDoId`
+
+## Example Account->todolists->todoitems data
+[
+  {
+    id: 'some-id-here-unieuq1',
+    name: 'account #1',
+    todo-lists: [
+      {
+        id: 'some-id-here-unieueq2',
+        name: 'to do list #1',
+        todo-items: [
+          {
+            id: 'some-id-here-unique3',
+            name: 'to do item #1',
+          }
+        ]
+      }
+    ]
+  }
+]
